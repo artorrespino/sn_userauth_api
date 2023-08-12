@@ -26,7 +26,6 @@ public class UsuarioServiceImplo implements UsuarioService {
     private String estadoEliminado;
 
 
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -52,11 +51,9 @@ public class UsuarioServiceImplo implements UsuarioService {
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
 
         //Registrar el cliente
-        List<ClienteDTO> listaCliente = usuarioCreateDTO.getCliente();
-        for ( ClienteDTO itemCLiente: listaCliente) {
-            itemCLiente.setIdUsuario( usuarioGuardado.getIdUsuario() );
-            clienteFeignUsuario.registrarCliente(itemCLiente);
-        }
+        ClienteDTO clienteDTO = usuarioCreateDTO.getCliente();
+        clienteDTO.setIdUsuario(usuarioGuardado.getIdUsuario());
+        clienteFeignUsuario.registrarCliente(clienteDTO);
 
         return UsuarioMapper.INSTANCIA.usuarioAUsuarioDTO((usuarioGuardado));
     }

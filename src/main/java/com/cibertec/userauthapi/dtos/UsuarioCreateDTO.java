@@ -20,5 +20,5 @@ public class UsuarioCreateDTO {
     private String estado;
     private Rol rol;
 
-    private List<ClienteDTO> cliente;
+    private ClienteDTO cliente;
 }
