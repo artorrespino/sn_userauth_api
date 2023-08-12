@@ -1,8 +1,10 @@
 package com.cibertec.userauthapi.service;
 
+import com.cibertec.userauthapi.dtos.ClienteDTO;
 import com.cibertec.userauthapi.dtos.UsuarioCreateDTO;
 import com.cibertec.userauthapi.dtos.UsuarioDTO;
 import com.cibertec.userauthapi.dtos.UsuarioUpdateDTO;
+import com.cibertec.userauthapi.feignUsuario.ClienteFeignUsuario;
 import com.cibertec.userauthapi.mappers.UsuarioMapper;
 import com.cibertec.userauthapi.model.Usuario;
 import com.cibertec.userauthapi.repository.UsuarioRepository;
@@ -28,6 +30,9 @@ public class UsuarioServiceImplo implements UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private ClienteFeignUsuario clienteFeignUsuario;
+
     @Override
     public List<UsuarioDTO> listarUsuarios() {
         return UsuarioMapper.INSTANCIA.listaUsuarioAListaUsuarioDTO(usuarioRepository.findAll());
@@ -45,6 +50,14 @@ public class UsuarioServiceImplo implements UsuarioService {
         Usuario usuario = UsuarioMapper.INSTANCIA.usuarioCreateDTOAUsuario(usuarioCreateDTO);
         usuario.setEstado(estadoActivo);// Asignar el estado activo al usuario antes de guardarlo
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
+
+        //Registrar el cliente
+        List<ClienteDTO> listaCliente = usuarioCreateDTO.getCliente();
+        for ( ClienteDTO itemCLiente: listaCliente) {
+            itemCLiente.setIdUsuario( usuarioGuardado.getIdUsuario() );
+            clienteFeignUsuario.registrarCliente(itemCLiente);
+        }
+
         return UsuarioMapper.INSTANCIA.usuarioAUsuarioDTO((usuarioGuardado));
     }
 
