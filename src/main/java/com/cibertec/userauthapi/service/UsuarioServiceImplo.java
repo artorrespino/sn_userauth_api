@@ -16,14 +16,14 @@ import java.util.Optional;
 
 @Service
 public class UsuarioServiceImplo implements UsuarioService {
-/*
+
     @Value("${constantes.ESTADO_ACTIVO}")
     private String estadoActivo;
 
     @Value("${constantes.ESTADO_INACTIVO}")
     private String estadoEliminado;
 
- */
+
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -43,7 +43,7 @@ public class UsuarioServiceImplo implements UsuarioService {
     @Override
     public UsuarioDTO registrarUsuario(UsuarioCreateDTO usuarioCreateDTO) {
         Usuario usuario = UsuarioMapper.INSTANCIA.usuarioCreateDTOAUsuario(usuarioCreateDTO);
-        usuario.setEstado("Activo");// Asignar el estado activo al usuario antes de guardarlo
+        usuario.setEstado(estadoActivo);// Asignar el estado activo al usuario antes de guardarlo
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
         return UsuarioMapper.INSTANCIA.usuarioAUsuarioDTO((usuarioGuardado));
     }
@@ -60,7 +60,7 @@ public class UsuarioServiceImplo implements UsuarioService {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
-            usuario.setEstado("Eliminado");
+            usuario.setEstado(estadoEliminado);
             usuarioRepository.save(usuario);
             UsuarioDTO usuarioDTO = UsuarioMapper.INSTANCIA.usuarioAUsuarioDTO(usuario);
             return usuarioDTO;

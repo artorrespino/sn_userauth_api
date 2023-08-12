@@ -4,6 +4,8 @@ import com.cibertec.userauthapi.model.Rol;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class UsuarioCreateDTO {
@@ -17,4 +19,6 @@ public class UsuarioCreateDTO {
     private Integer intentosLogin;
     private String estado;
     private Rol rol;
+
+    private List<TipoDocIdentidadDTO> tipoDocIdentidad;
 }
