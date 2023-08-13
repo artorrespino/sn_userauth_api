@@ -25,6 +25,9 @@ public class UsuarioServiceImplo implements UsuarioService {
     @Value("${constantes.ESTADO_INACTIVO}")
     private String estadoEliminado;
 
+    @Value("${constantes.ROL_ADMINISTRADOR}")
+    private String rolAdmin;
+
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -50,10 +53,14 @@ public class UsuarioServiceImplo implements UsuarioService {
         usuario.setEstado(estadoActivo);// Asignar el estado activo al usuario antes de guardarlo
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
 
-        //Registrar el cliente
-        ClienteDTO clienteDTO = usuarioCreateDTO.getCliente();
-        clienteDTO.setIdUsuario(usuarioGuardado.getIdUsuario());
-        clienteFeignUsuario.registrarCliente(clienteDTO);
+        // if cliente isn't ADMIN (1)
+        if(usuarioGuardado.getRol().getIdRol() != 1){
+            // Registrar el cliente
+            ClienteDTO clienteDTO = usuarioCreateDTO.getCliente();
+            clienteDTO.setIdUsuario(usuarioGuardado.getIdUsuario());
+            clienteFeignUsuario.registrarCliente(clienteDTO);
+
+        }
 
         return UsuarioMapper.INSTANCIA.usuarioAUsuarioDTO((usuarioGuardado));
     }
