@@ -13,4 +13,6 @@ public interface UsuarioService {
     UsuarioDTO registrarUsuario(UsuarioCreateDTO usuarioCreateDTO);
     UsuarioDTO actualizarUsuario(UsuarioUpdateDTO usuarioUpdateDTO);
     UsuarioDTO eliminarUsuario(long id);
+
+    UsuarioDTO login (String email, String password);
 }

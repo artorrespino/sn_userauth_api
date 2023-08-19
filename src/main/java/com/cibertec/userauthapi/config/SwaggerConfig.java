@@ -28,8 +28,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("API de Autenticación y Gestión de Usuarios")
-                .description("API REST para gestionar usuarios")
+                .title("Salud Nativa - UserAuth API (MySQL)")
+                .description("API Rest de Autenticación y Gestión de Usuarios")
                 .version("1.0.0")
                 .build();
     }
