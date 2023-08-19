@@ -43,4 +43,9 @@ public class UsuarioController {
     public UsuarioDTO eliminarUsuario(@PathVariable long usuarioId) {
         return usuarioService.eliminarUsuario(usuarioId);
     }
+
+    @PostMapping("/login")
+    public UsuarioDTO loginUsuario(@RequestBody UsuarioUpdateDTO usuarioRequest) {
+        return usuarioService.login(usuarioRequest.getEmail(), usuarioRequest.getContrasenia());
+    }
 }

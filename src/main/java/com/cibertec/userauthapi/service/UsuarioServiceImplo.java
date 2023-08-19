@@ -1,9 +1,6 @@
 package com.cibertec.userauthapi.service;
 
-import com.cibertec.userauthapi.dtos.ClienteDTO;
-import com.cibertec.userauthapi.dtos.UsuarioCreateDTO;
-import com.cibertec.userauthapi.dtos.UsuarioDTO;
-import com.cibertec.userauthapi.dtos.UsuarioUpdateDTO;
+import com.cibertec.userauthapi.dtos.*;
 import com.cibertec.userauthapi.feignUsuario.ClienteFeignUsuario;
 import com.cibertec.userauthapi.mappers.UsuarioMapper;
 import com.cibertec.userauthapi.model.Usuario;
@@ -84,5 +81,19 @@ public class UsuarioServiceImplo implements UsuarioService {
         } else {
             throw new NoSuchElementException("No se encontró el usuario con ID = " + id);
         }
+    }
+
+    @Override
+    public UsuarioDTO login(String email, String password) {
+        Usuario usuario = usuarioRepository.getUsuarioByEmail(email);
+
+        if (usuario != null && password.equals(usuario.getContrasenia())){
+            UsuarioDTO usuarioLogin = UsuarioMapper.INSTANCIA.usuarioAUsuarioDTO(usuario);
+            return usuarioLogin;
+
+        } else {
+            return null;
+        }
+
     }
 }
